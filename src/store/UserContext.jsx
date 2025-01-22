@@ -1,9 +1,10 @@
-import React,{ createContext, useContext,useState } from 'react';
+import { createContext, useState , useEffect } from 'react';
+import PropTypes from "prop-types";
 
 const UserContext=createContext();
 
-export const userProvider=({children})=>{
-       
+export const UserProvider=({children})=>{
+
     const [user,setUser]=useState(null);
 
     const signup = async(signupData)=>{
@@ -36,4 +37,22 @@ export const userProvider=({children})=>{
             setUser(JSON.parse(user));
         }
     }
+    useEffect(() => {
+        const hasInitialized = localStorage.getItem("initializeUserRan");
+        if (!hasInitialized) {
+          initializeUser();
+        }
+      }, []);
+
+    return (
+        <UserContext.Provider value={{ user, signup, login, logout, initializeUser }}>
+          {children}
+        </UserContext.Provider>
+      );
 };
+
+UserProvider.propTypes = {
+    children: PropTypes.node.isRequired, 
+};
+
+
