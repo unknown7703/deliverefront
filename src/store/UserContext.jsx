@@ -1,58 +1,31 @@
-import { createContext, useState , useEffect } from 'react';
+import { createContext, useState } from "react";
 import PropTypes from "prop-types";
 
-const UserContext=createContext();
+export const UserContext = createContext();
 
-export const UserProvider=({children})=>{
+export const UserProvider = ({ children }) => {
+    const defaultUser = { userLoc: { locationName: "Delhi", lat: 28.6520, lng: 77.2410 } };
+    const [user, setUser] = useState(() => {
+      const storedUser = localStorage.getItem("user");
+      return storedUser ? JSON.parse(storedUser) : defaultUser;
+    });
 
-    const [user,setUser]=useState(null);
-
-    const signup = async(signupData)=>{
-        try{
-            console.log(signupData);
-        }catch(error){
-            console.error("Signup failed:", error);
-            throw error;
-        }
+const updateUser = (newUser) => {
+    try {
+    localStorage.setItem("user", JSON.stringify(newUser)); 
+    setUser(newUser);
+    } catch (e) {
+    console.log(e);
     }
+};
 
-    const login = async(loginData)=>{
-        try{
-            console.log(loginData);
-            localStorage.setItem("user",JSON.stringify(user));
-        }catch(error){
-            console.error("Login failed:", error);
-            throw error;
-        }
-    }
-
-    const logout =()=>{
-        setUser(null);  
-        localStorage.removeItem("user");
-    }
-
-    const initializeUser=()=>{
-        const user=localStorage.getItem("user");
-        if(user){
-            setUser(JSON.parse(user));
-        }
-    }
-    useEffect(() => {
-        const hasInitialized = localStorage.getItem("initializeUserRan");
-        if (!hasInitialized) {
-          initializeUser();
-        }
-      }, []);
-
-    return (
-        <UserContext.Provider value={{ user, signup, login, logout, initializeUser }}>
-          {children}
-        </UserContext.Provider>
-      );
+return (
+    <UserContext.Provider value={{ updateUser, user }}>
+    {children}
+    </UserContext.Provider>
+);
 };
 
 UserProvider.propTypes = {
-    children: PropTypes.node.isRequired, 
+children: PropTypes.node.isRequired,
 };
-
-
