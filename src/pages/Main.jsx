@@ -14,7 +14,7 @@ function Main() {
     <div className="bg-[#FAF9F6]">
       <Navbar />
       <p className="mt-16 ml-[12%] font-bold text-4xl">Experience the functionalities of DeliverE Api service </p>
-      <p className="mt-2 ml-[12%] font-normal text-md">This website is intended as an example of DeliverE Api usage , and is not a complete project</p>
+      <p className="mt-2 ml-[12%] font-normal text-md">This website is intended as an example of DeliverE Api usage</p>
       <div className=" w-full h-screen flex flex-row items-start px-[12%] justify-center">  
         <div className="w-[60%] mt-20 ">
           <div className="flex flex-col gap-4 drop-shadow-sm items-start justify-center">
